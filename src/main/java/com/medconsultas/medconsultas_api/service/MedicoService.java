@@ -5,8 +5,6 @@ import com.medconsultas.medconsultas_api.entity.Medico;
 import com.medconsultas.medconsultas_api.exception.MedicoNotFoundException;
 import com.medconsultas.medconsultas_api.repository.MedicoRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,37 +30,39 @@ public class MedicoService {
     public List<MedicoDTO> listarMedicos() {
         return repository.findAll()
                 .stream()
-                .map(m -> {
-                    MedicoDTO medicoDto = new MedicoDTO();
-                    medicoDto.setCrm(m.getCrm());
-                    medicoDto.setNome(m.getNome());
-                    medicoDto.setEmail(m.getEmail());
-                    medicoDto.setEspecialidade(m.getEspecialidade());
-                    return medicoDto;
-                })
+                .map(m -> new MedicoDTO(
+                            m.getCrm(),
+                            m.getNome(),
+                            m.getEmail(),
+                            m.getEspecialidade()
+                    ))
                 .collect(Collectors.toList());
     }
     public MedicoDTO BuscarPorCrm(String crm) {
-        Medico m = repository.findById(crm)
+        Medico medico = repository.findById(crm)
                 .orElseThrow(() -> new MedicoNotFoundException(crm));
         return new MedicoDTO(
-                m.getCrm(),
-                m.getNome(),
-                m.getEmail(),
-                m.getEspecialidade()
+                medico.getCrm(),
+                medico.getNome(),
+                medico.getEmail(),
+                medico.getEspecialidade()
         );
     }
     public MedicoDTO atualizarMedico(String crm, MedicoDTO medicoDTO) {
-        Optional<Medico> medico = repository.findById(crm);
-        if (medico.isPresent()) {
-            medico.get().setNome(medicoDTO.getNome());
-            medico.get().setEspecialidade(medicoDTO.getEspecialidade());
-            medico.get().setEmail(medicoDTO.getEmail());
-            repository.save(medico.get());
-        } else
-            throw new MedicoNotFoundException(crm);
-        return medicoDTO;
+        Medico medico = repository.findById(crm)
+                .orElseThrow(() -> new MedicoNotFoundException(crm));
+        medico.setNome(medicoDTO.getNome());
+        medico.setEspecialidade(medicoDTO.getEspecialidade());
+        medico.setEmail(medicoDTO.getEmail());
+        repository.save(medico);
+        return new MedicoDTO(
+                medico.getCrm(),
+                medico.getNome(),
+                medico.getEmail(),
+                medico.getEspecialidade()
+        );
     }
+
     public void deletarMedico(String crm) {
         if(!repository.existsById(crm)){
             throw new MedicoNotFoundException(crm);
