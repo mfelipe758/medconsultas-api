@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/medicos")
+@RequestMapping("/api/medico")
 public class MedicoController {
 
     private final MedicoService service;
@@ -17,13 +17,30 @@ public class MedicoController {
         this.service = service;
     }
 
+    @GetMapping
+    public ResponseEntity<List<MedicoDTO>> listarMedicos() {
+        return ResponseEntity.ok(service.listarMedicos());
+    }
+
+    @GetMapping("/{crm}")
+    public ResponseEntity<MedicoDTO> buscarMedico(@PathVariable String crm) {
+        return ResponseEntity.ok(service.BuscarPorCrm(crm));
+    }
+
     @PostMapping
-    public ResponseEntity<MedicoDTO> criar(@RequestBody MedicoDTO dto) {
+    public ResponseEntity<MedicoDTO> criarMedico(@RequestBody MedicoDTO dto) {
         return ResponseEntity.ok(service.adicionarMedico(dto));
     }
 
-    @GetMapping
-    public ResponseEntity<List<MedicoDTO>> listar() {
-        return ResponseEntity.ok(service.listaMedicos());
+    @PutMapping("/{crm}")
+    public ResponseEntity<MedicoDTO> atualizarMedico(@PathVariable String crm, @RequestBody MedicoDTO dto) {
+        return ResponseEntity.ok(service.atualizarMedico(crm, dto));
     }
+
+    @DeleteMapping("/{crm}")
+    public ResponseEntity<Void> deletarMedico(@PathVariable String crm) {
+        service.deletarMedico(crm);
+        return ResponseEntity.noContent().build();
+    }
+
 }
