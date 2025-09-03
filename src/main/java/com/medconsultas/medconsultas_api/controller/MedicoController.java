@@ -24,17 +24,17 @@ public class MedicoController {
 
     @GetMapping("/{crm}")
     public ResponseEntity<MedicoDTO> buscarMedico(@PathVariable String crm) {
-        return ResponseEntity.ok(service.BuscarPorCrm(crm));
+        return ResponseEntity.ok(service.buscarPorCrm(crm));
     }
 
     @PostMapping
-    public ResponseEntity<MedicoDTO> criarMedico(@RequestBody MedicoDTO dto) {
-        return ResponseEntity.ok(service.adicionarMedico(dto));
+    public ResponseEntity<MedicoDTO> criarMedico(@RequestBody MedicoDTO medicoDTO) {
+        return ResponseEntity.ok(service.adicionarMedico(medicoDTO));
     }
 
     @PutMapping("/{crm}")
-    public ResponseEntity<MedicoDTO> atualizarMedico(@PathVariable String crm, @RequestBody MedicoDTO dto) {
-        return ResponseEntity.ok(service.atualizarMedico(crm, dto));
+    public ResponseEntity<MedicoDTO> atualizarMedico(@PathVariable String crm, @RequestBody MedicoDTO medicoDTO) {
+        return ResponseEntity.ok(service.atualizarMedico(crm, medicoDTO));
     }
 
     @DeleteMapping("/{crm}")

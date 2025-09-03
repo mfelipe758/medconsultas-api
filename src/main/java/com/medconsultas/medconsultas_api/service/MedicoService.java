@@ -38,7 +38,7 @@ public class MedicoService {
                     ))
                 .collect(Collectors.toList());
     }
-    public MedicoDTO BuscarPorCrm(String crm) {
+    public MedicoDTO buscarPorCrm(String crm) {
         Medico medico = repository.findById(crm)
                 .orElseThrow(() -> new MedicoNotFoundException(crm));
         return new MedicoDTO(
