@@ -1,13 +1,16 @@
 package com.medconsultas.medconsultas_api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.Set;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -15,21 +18,26 @@ import java.util.Objects;
 @Builder
 public class Medico {
     @Id
-    private String crm;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nome", nullable = false)
     private String nome;
-    private String especialidade;
-    private String email;
 
+    @Column(name = "crm", unique = true, nullable = false)
+    private Integer crm;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Medico medico = (Medico) o;
-        return Objects.equals(crm, medico.crm);
-    }
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Column(name = "data_inscricao", nullable = false)
+    private LocalDate dataInscricao;
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(crm);
-    }
+    @JsonIgnore
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(
+            name = "medicos_tem_especialidades",
+            joinColumns = @JoinColumn(name = "id_medico", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_especialidade", referencedColumnName = "id")
+    )
+    private Set<Especialidade> especialidades;
+
 }

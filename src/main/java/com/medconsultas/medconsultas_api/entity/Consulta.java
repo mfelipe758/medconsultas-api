@@ -18,14 +18,5 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "paciente_cpf", nullable = false)
-    private Paciente paciente;
-
-    @ManyToOne
-    @JoinColumn(name = "medico_crm", nullable = false)
-    private Medico medico;
-
     private LocalDateTime dataHora;
-    private String motivo;
 }

@@ -1,13 +1,16 @@
 package com.medconsultas.medconsultas_api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -15,19 +18,17 @@ import java.util.Objects;
 @Builder
 public class Paciente {
     @Id
-    private String cpf;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nome", unique = true, nullable = false)
     private String nome;
-    private String email;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Paciente paciente = (Paciente) o;
-        return Objects.equals(cpf, paciente.cpf);
-    }
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Column(name = "data_nascimento", nullable = false)
+    private LocalDate dataNascimento;
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(cpf);
-    }
+    @OneToMany
+    private List<Consulta> consultas;
+
 }
