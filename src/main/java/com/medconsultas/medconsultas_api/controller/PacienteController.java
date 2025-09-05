@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.medconsultas.medconsultas_api.dto.PacienteDTO;
 import com.medconsultas.medconsultas_api.service.PacienteService;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -33,9 +32,9 @@ public class PacienteController {
         return ResponseEntity.ok(service.listarPacientes());
     }
 
-    @GetMapping("/{cpf}")
-    public ResponseEntity<PacienteDTO> buscarPaciente(@PathVariable String cpf) {
-        return ResponseEntity.ok(service.buscarPorCpf(cpf));
+    @GetMapping("/{id}")
+    public ResponseEntity<PacienteDTO> buscarPaciente(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscar(id));
     }
 
     @PostMapping
@@ -43,16 +42,14 @@ public class PacienteController {
         return ResponseEntity.ok(service.adicionarPaciente(pacienteDTO));
     }
     
-    @PutMapping("/{cpf}")
-    public ResponseEntity<PacienteDTO> atualizarPaciente(@PathVariable String cpf, @RequestBody PacienteDTO pacienteDTO) {
-        return ResponseEntity.ok(service.atualizarPaciente(cpf, pacienteDTO));
+    @PutMapping("/{id}")
+    public ResponseEntity<PacienteDTO> atualizarPaciente(@PathVariable Long id, @RequestBody PacienteDTO pacienteDTO) {
+        return ResponseEntity.ok(service.atualizarPaciente(id, pacienteDTO));
     }
     
-    @DeleteMapping("/{cpf}")
-    public ResponseEntity<Void> deletarPaciente(@PathVariable String cpf) {
-        service.deletarPaciente(cpf);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPaciente(@PathVariable Long id) {
+        service.deletarPaciente(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

@@ -22,9 +22,9 @@ public class MedicoController {
         return ResponseEntity.ok(service.listarMedicos());
     }
 
-    @GetMapping("/{crm}")
-    public ResponseEntity<MedicoDTO> buscarMedico(@PathVariable String crm) {
-        return ResponseEntity.ok(service.buscarPorCrm(crm));
+    @GetMapping("/{id}")
+    public ResponseEntity<MedicoDTO> buscarMedico(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarMedico(id));
     }
 
     @PostMapping
@@ -32,14 +32,14 @@ public class MedicoController {
         return ResponseEntity.ok(service.adicionarMedico(medicoDTO));
     }
 
-    @PutMapping("/{crm}")
-    public ResponseEntity<MedicoDTO> atualizarMedico(@PathVariable String crm, @RequestBody MedicoDTO medicoDTO) {
-        return ResponseEntity.ok(service.atualizarMedico(crm, medicoDTO));
+    @PutMapping("/{id}")
+    public ResponseEntity<MedicoDTO> atualizarMedico(@PathVariable Long id, @RequestBody MedicoDTO medicoDTO) {
+        return ResponseEntity.ok(service.atualizarMedico(id, medicoDTO));
     }
 
-    @DeleteMapping("/{crm}")
-    public ResponseEntity<Void> deletarMedico(@PathVariable String crm) {
-        service.deletarMedico(crm);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarMedico(@PathVariable Long id) {
+        service.deletarMedico(id);
         return ResponseEntity.noContent().build();
     }
 
