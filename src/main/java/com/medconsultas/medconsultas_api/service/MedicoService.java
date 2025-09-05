@@ -1,28 +1,41 @@
 package com.medconsultas.medconsultas_api.service;
 
 import com.medconsultas.medconsultas_api.dto.MedicoDTO;
+import com.medconsultas.medconsultas_api.entity.Especialidade;
 import com.medconsultas.medconsultas_api.entity.Medico;
+import com.medconsultas.medconsultas_api.exception.EspecialidadeNotFoundException;
 import com.medconsultas.medconsultas_api.exception.MedicoNotFoundException;
+import com.medconsultas.medconsultas_api.repository.EspecialidadeRepository;
 import com.medconsultas.medconsultas_api.repository.MedicoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class MedicoService {
 
     private final MedicoRepository repository;
+    private final EspecialidadeService serviceEspecialidade;
 
-    public MedicoService(MedicoRepository repository) {
+    public MedicoService(MedicoRepository repository, EspecialidadeService serviceEspecialidade) {
         this.repository = repository;
+        this.serviceEspecialidade = serviceEspecialidade;
     }
+
+    @Transactional
     public MedicoDTO adicionarMedico(MedicoDTO medicoDTO) {
+
+       serviceEspecialidade.verificarEspecialidadeExistente(medicoDTO);
+
         Medico medico = Medico.builder()
-                .crm(medicoDTO.getCrm())
+                .id(medicoDTO.getId())
                 .nome(medicoDTO.getNome())
-                .email(medicoDTO.getEmail())
-                .especialidade(medicoDTO.getEspecialidade())
+                .crm(medicoDTO.getCrm())
+                .dataInscricao(medicoDTO.getDataInscricao())
+                .especialidades(medicoDTO.getEspecialidades())
                 .build();
         repository.save(medico);
         return medicoDTO;
@@ -30,43 +43,41 @@ public class MedicoService {
     public List<MedicoDTO> listarMedicos() {
         return repository.findAll()
                 .stream()
-                .map(m -> new MedicoDTO(
-                            m.getCrm(),
-                            m.getNome(),
-                            m.getEmail(),
-                            m.getEspecialidade()
-                    ))
-                .collect(Collectors.toList());
+                .map(MedicoDTO::new)
+                .toList();
     }
-    public MedicoDTO buscarPorCrm(String crm) {
-        Medico medico = repository.findById(crm)
-                .orElseThrow(() -> new MedicoNotFoundException(crm));
+    public MedicoDTO buscarMedico(Long id) {
+        Medico medico = repository.findById(id)
+                .orElseThrow(() -> new MedicoNotFoundException(id));
         return new MedicoDTO(
-                medico.getCrm(),
+                medico.getId(),
                 medico.getNome(),
-                medico.getEmail(),
-                medico.getEspecialidade()
+                medico.getCrm(),
+                medico.getDataInscricao(),
+                medico.getEspecialidades()
         );
     }
-    public MedicoDTO atualizarMedico(String crm, MedicoDTO medicoDTO) {
-        Medico medico = repository.findById(crm)
-                .orElseThrow(() -> new MedicoNotFoundException(crm));
+    public MedicoDTO atualizarMedico(Long id, MedicoDTO medicoDTO) {
+        Medico medico = repository.findById(id)
+                .orElseThrow(() -> new MedicoNotFoundException(id));
         medico.setNome(medicoDTO.getNome());
-        medico.setEspecialidade(medicoDTO.getEspecialidade());
-        medico.setEmail(medicoDTO.getEmail());
+        medico.setCrm(medicoDTO.getCrm());
+        medico.setDataInscricao(medicoDTO.getDataInscricao());
+        medico.setEspecialidades(medicoDTO.getEspecialidades());
         repository.save(medico);
         return new MedicoDTO(
-                medico.getCrm(),
+                medico.getId(),
                 medico.getNome(),
-                medico.getEmail(),
-                medico.getEspecialidade()
+                medico.getCrm(),
+                medico.getDataInscricao(),
+                medico.getEspecialidades()
         );
     }
 
-    public void deletarMedico(String crm) {
-        if(!repository.existsById(crm)){
-            throw new MedicoNotFoundException(crm);
+    public void deletarMedico(Long id) {
+        if(!repository.existsById(id)){
+            throw new MedicoNotFoundException(id);
         }
-        repository.deleteById(crm);
+        repository.deleteById(id);
     }
 }

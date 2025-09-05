@@ -11,6 +11,7 @@ import com.medconsultas.medconsultas_api.dto.PacienteDTO;
 import com.medconsultas.medconsultas_api.entity.Paciente;
 import com.medconsultas.medconsultas_api.exception.PacienteNotFoundException;
 import com.medconsultas.medconsultas_api.repository.PacienteRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PacienteService {
@@ -20,12 +21,13 @@ public class PacienteService {
     public PacienteService(PacienteRepository repository) {
         this.repository = repository;
     }
-    
+    @Transactional
     public PacienteDTO adicionarPaciente(PacienteDTO pacienteDTO) {
         Paciente paciente = Paciente.builder()
-                .cpf(pacienteDTO.getCpf())
+                .id(pacienteDTO.getId())
                 .nome(pacienteDTO.getNome())
-                .email(pacienteDTO.getEmail())
+                .dataNascimento(pacienteDTO.getDataNascimento())
+                .consultas(pacienteDTO.getConsultas())
                 .build();
         repository.save(paciente);
         return pacienteDTO;
@@ -34,41 +36,40 @@ public class PacienteService {
     public List<PacienteDTO> listarPacientes() {
         return repository.findAll()
                 .stream()
-                .map(p -> new PacienteDTO(
-                        p.getCpf(),
-                        p.getNome(),
-                        p.getEmail()    
-                ))
-                .collect(Collectors.toList());
+                .map(PacienteDTO::new)
+                .toList();
     }
     
-    public PacienteDTO buscarPorCpf(String cpf) {
-        Paciente paciente = repository.findById(cpf)
-                .orElseThrow(() -> new PacienteNotFoundException(cpf));
+    public PacienteDTO buscar(Long id) {
+        Paciente paciente = repository.findById(id)
+                .orElseThrow(() -> new PacienteNotFoundException(id));
         return new PacienteDTO(
-                paciente.getCpf(),
+                paciente.getId(),
                 paciente.getNome(),
-                paciente.getEmail());
+                paciente.getDataNascimento(),
+                paciente.getConsultas());
     }
     
     
-    public PacienteDTO atualizarPaciente(String cpf, PacienteDTO pacienteDTO) {
-        Paciente paciente = repository.findById(cpf)
-                .orElseThrow(() -> new PacienteNotFoundException(cpf));
+    public PacienteDTO atualizarPaciente(Long id, PacienteDTO pacienteDTO) {
+        Paciente paciente = repository.findById(id)
+                .orElseThrow(() -> new PacienteNotFoundException(id));
         paciente.setNome(pacienteDTO.getNome());
-        paciente.setEmail(pacienteDTO.getEmail());
+        paciente.setDataNascimento(pacienteDTO.getDataNascimento());
+        paciente.setConsultas(pacienteDTO.getConsultas());
         repository.save(paciente);
         return new PacienteDTO(
-                paciente.getCpf(),
+                paciente.getId(),
                 paciente.getNome(),
-                paciente.getEmail()
+                paciente.getDataNascimento(),
+                paciente.getConsultas()
         );
     }
     
-    public void deletarPaciente(String cpf) {
-        if (!repository.existsById(cpf)) {
-            throw new PacienteNotFoundException(cpf);
+    public void deletarPaciente(Long id) {
+        if (!repository.existsById(id)) {
+            throw new PacienteNotFoundException(id);
         }
-        repository.deleteById(cpf);
+        repository.deleteById(id);
     }
 }
