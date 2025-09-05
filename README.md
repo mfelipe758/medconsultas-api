@@ -7,12 +7,12 @@ Este projeto tem como objetivo desenvolver uma plataforma para conectar pessoas 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Backend**: Java com Spring Boot
-- **Frontend**: A ser definido pelo grupo (React, Angular, etc.)
+- **Frontend**: Em definição 
 - **Banco de Dados**: Em definição
 
 ## 📌 Status
 
-- **API de Backend**: Em desenvolvimento. O CRUD de Médicos e Pacientes já está implementado.
+- **API de Backend**: Em desenvolvimento. O CRUD de Consulta, Especialidade, Médicos e Pacientes já estão implementados.
 - **Frontend**: A ser iniciado.
 
 ---
