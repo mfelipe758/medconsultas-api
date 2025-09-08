@@ -38,7 +38,7 @@ public class MedicoService {
                 .especialidades(medicoDTO.getEspecialidades())
                 .build();
         repository.save(medico);
-        return medicoDTO;
+        return new MedicoDTO(medico);
     }
     public List<MedicoDTO> listarMedicos() {
         return repository.findAll()

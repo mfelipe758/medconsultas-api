@@ -27,7 +27,7 @@ public class EspecialidadeService {
                 .medicos(especialidadeDTO.getMedicos())
                 .build();
         repository.save(especialidade);
-        return especialidadeDTO;
+        return new EspecialidadeDTO(especialidade);
     }
 
     public List<EspecialidadeDTO> listarEspecialidades(){

@@ -4,7 +4,6 @@ import com.medconsultas.medconsultas_api.entity.Consulta;
 import com.medconsultas.medconsultas_api.exception.ConsultaNotFoundException;
 import com.medconsultas.medconsultas_api.repository.ConsultaRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,7 @@ public class ConsultaService {
         .dataHora(consultaDTO.getDataHora())
         .build();
         repository.save(consulta);
-        return consultaDTO;
+        return new ConsultaDTO(consulta);
     }
 
     public List<ConsultaDTO> listarConsultas() {

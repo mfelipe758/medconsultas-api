@@ -30,7 +30,7 @@ public class PacienteService {
                 .consultas(pacienteDTO.getConsultas())
                 .build();
         repository.save(paciente);
-        return pacienteDTO;
+        return new PacienteDTO(paciente);
     }
 
     public List<PacienteDTO> listarPacientes() {
