@@ -18,4 +18,14 @@ public class AgendamentoDTO {
     private Consulta consulta;
     private Horario horario;
     private LocalDate dataConsulta;
+
+    public AgendamentoDTO(Agendamento agendamento) {
+        this.id = agendamento.getId();
+        this.especialidade = agendamento.getEspecialidade();
+        this.medico = agendamento.getMedico();
+        this.paciente = agendamento.getPaciente();
+        this.consulta = agendamento.getConsulta();
+        this.horario = agendamento.getHorario();
+        this.dataConsulta = agendamento.getDataConsulta();
+    }
 }
