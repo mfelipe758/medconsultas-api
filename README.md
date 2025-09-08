@@ -12,7 +12,7 @@ Este projeto tem como objetivo desenvolver uma plataforma para conectar pessoas 
 
 ## 📌 Status
 
-- **API de Backend**: Em desenvolvimento. O CRUD de Consulta, Especialidade, Médicos e Pacientes já estão implementados.
+- **API de Backend**: Em desenvolvimento. O CRUD de Agendamento, Consulta, Especialidade, Horário, Médico e Paciente já estão implementados.
 - **Frontend**: A ser iniciado.
 
 ---
