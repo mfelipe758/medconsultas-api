@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/paciente")
+@RequestMapping("/api/pacientes")
 public class PacienteController {
 
     private final PacienteService service;
