@@ -1,4 +1,4 @@
-package com.medconsultas.medconsultas_api.dto;
+package com.medconsultas.medconsultas_api.controller.dto;
 
 import com.medconsultas.medconsultas_api.entity.Especialidade;
 import com.medconsultas.medconsultas_api.entity.Medico;
