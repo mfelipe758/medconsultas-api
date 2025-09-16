@@ -26,12 +26,7 @@ public class Especialidade {
     private String descricao;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "medicos_tem_especialidades",
-            joinColumns = @JoinColumn(name = "id_especialidade", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id_medico", referencedColumnName = "id")
-    )
+    @ManyToMany(mappedBy = "especialidades")
     private List<Medico> medicos;
 
 }

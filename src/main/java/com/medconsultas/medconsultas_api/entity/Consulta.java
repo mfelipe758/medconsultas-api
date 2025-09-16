@@ -18,5 +18,15 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime dataHora;
+    @OneToOne
+    @JoinColumn(name = "id_agendamento", nullable = false)
+    private Agendamento agendamento;
+
+    private LocalDateTime dataHoraRealizada;
+
+    private String diagnostico;
+
+    private String observacoes;
+
+    private String receita;
 }

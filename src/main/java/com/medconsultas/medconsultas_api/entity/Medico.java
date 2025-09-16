@@ -1,6 +1,4 @@
 package com.medconsultas.medconsultas_api.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,7 +30,13 @@ public class Medico {
     @Column(name = "data_inscricao", nullable = false)
     private LocalDate dataInscricao;
 
-    @JsonIgnore
+    @Embedded
+    private Endereco endereco;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "medicos_tem_especialidades",
@@ -39,5 +44,8 @@ public class Medico {
             inverseJoinColumns = @JoinColumn(name = "id_especialidade", referencedColumnName = "id")
     )
     private Set<Especialidade> especialidades;
+
+    @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Agendamento> agendamentos;
 
 }

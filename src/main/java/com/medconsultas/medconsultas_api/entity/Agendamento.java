@@ -20,7 +20,7 @@ public class Agendamento {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "especialidade_id", nullable = false)
+    @JoinColumn(name = "id_especialidade", nullable = false)
     private Especialidade especialidade;
 
     @ManyToOne
@@ -31,14 +31,18 @@ public class Agendamento {
     @JoinColumn(name = "id_paciente", nullable = false)
     private Paciente paciente;
 
-    @OneToOne()
+    @OneToOne(mappedBy = "agendamento", cascade = CascadeType.ALL)
     private Consulta consulta;
 
     @ManyToOne
-    @JoinColumn(name = "id_horario")
+    @JoinColumn(name = "id_horario", nullable = false)
     private Horario horario;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Column(name = "data_consulta")
+    @Column(name = "data_consulta", nullable = false)
     private LocalDate dataConsulta;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusAgendamento status;
 }
