@@ -1,15 +1,14 @@
 package com.medconsultas.medconsultas_api.controller.dto.response;
+
 import com.medconsultas.medconsultas_api.entity.Endereco;
 
 import java.time.LocalDate;
-import java.util.Set;
 
-public record MedicoResponseDTO(
+public record PacienteResponseDTO(
         Long id,
         String nome,
-        Integer crm,
-        LocalDate dataInscricao,
+        String cpf,
+        LocalDate dataNascimento,
         Endereco endereco,
-        UsuarioResponseDTO usuario,
-        Set<EspecialidadeResponseDTO> especialidades
+        UsuarioResponseDTO usuario
 ) {}
